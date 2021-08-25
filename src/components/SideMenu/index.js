@@ -11,6 +11,7 @@ function SideMenu({ children }) {
     <MenuContainer>
       <Menu
         style={{ width: 256 }}
+        defaultSelectedKeys={['1']}
         mode="inline"
         theme="light"
       >
@@ -18,7 +19,7 @@ function SideMenu({ children }) {
           <Link to="/">Usuários</Link>
         </Menu.Item>
         <Menu.Item key="2" icon={<ShoppingOutlined />}>
-          <Link to="/productRegistration">Produtos</Link>
+          <Link to="/products">Produtos</Link>
         </Menu.Item>
       </Menu>
       <Switch>

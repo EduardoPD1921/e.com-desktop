@@ -1,16 +1,16 @@
 import { HashRouter, Route } from 'react-router-dom';
 
-import SideMenu from './SideMenu';
+import SideMenu from './components/SideMenu';
 
 import UsersPage from './pages/UsersPage';
-import ProductRegistrationPage from './pages/ProductRegistrationPage';
+import ProductsPage from './pages/ProductsPage';
 
 function Router() {
   return (
     <HashRouter>
       <SideMenu>
         <Route exact path="/" component={UsersPage} />
-        <Route exact path="/productRegistration" component={ProductRegistrationPage} />
+        <Route exact path="/products" component={ProductsPage} />
       </SideMenu>
     </HashRouter>
   );
