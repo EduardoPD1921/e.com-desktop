@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../../api';
 
 import { Modal, Button, Form, Input, Select, Upload } from 'antd';
 import { IdcardOutlined, DollarOutlined, InboxOutlined } from '@ant-design/icons';
@@ -11,6 +12,7 @@ const { Dragger } = Upload;
 
 function ProductsPage() {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [imagePreview, setImagePreview] = useState('');
 
   const [form] = Form.useForm();
 
@@ -26,6 +28,36 @@ function ProductsPage() {
   function onSubmitForm(inputValues) {
     console.log(inputValues);
   };
+
+  function getBase64(img, callback) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+  };
+
+  function onChangeUploadImage({ fileList }) {
+    getBase64(fileList[0].originFileObj, imageURL => {
+      const data = {
+        image: imageURL
+      };
+
+      api.post('http://localhost:8000/product/store', data)
+        .then(resp => console.log(resp))
+        .catch(error => console.log(error.response));
+    });
+  };
+
+  // function onChangeUploadImage({ fileList }) {
+  //   const imageURL = URL.createObjectURL(fileList[0].originFileObj);
+  //   setImagePreview(previewURL);
+  //   const data = {
+  //     image: imageURL
+  //   };
+
+  //   api.post('http://localhost:8000/product/store', data)
+  //     .then(resp => console.log(resp.data))
+  //     .catch(error => console.log(error.response));
+  // };
 
   return (
     <>
@@ -101,7 +133,10 @@ function ProductsPage() {
               message: 'Insira uma imagem para o produto'
             }]}
           >
-            <Dragger multiple={false}>
+            <Dragger
+              onChange={onChangeUploadImage}
+              beforeUpload={() => false} 
+            >
               <InboxOutlined style={{ fontSize: 50, color: '#40a9ff' }} />
               <UploadDescription>
                 Arraste uma imagem ou clique para selecionar
@@ -128,6 +163,7 @@ function ProductsPage() {
             </FormButtonSection>
           </Form.Item>
         </Form>
+        {imagePreview ? <img src={imagePreview} alt="test" /> : ''}
       </Modal>
     </>
   );
