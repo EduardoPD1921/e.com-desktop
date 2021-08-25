@@ -29,35 +29,35 @@ function ProductsPage() {
     console.log(inputValues);
   };
 
-  function getBase64(img, callback) {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-  };
-
-  function onChangeUploadImage({ fileList }) {
-    getBase64(fileList[0].originFileObj, imageURL => {
-      const data = {
-        image: imageURL
-      };
-
-      api.post('http://localhost:8000/product/store', data)
-        .then(resp => console.log(resp))
-        .catch(error => console.log(error.response));
-    });
-  };
+  // function getBase64(img, callback) {
+  //   const reader = new FileReader();
+  //   reader.addEventListener('load', () => callback(reader.result));
+  //   reader.readAsDataURL(img);
+  // };
 
   // function onChangeUploadImage({ fileList }) {
-  //   const imageURL = URL.createObjectURL(fileList[0].originFileObj);
-  //   setImagePreview(previewURL);
-  //   const data = {
-  //     image: imageURL
-  //   };
+  //   getBase64(fileList[0].originFileObj, imageURL => {
+  //     const data = {
+  //       image: imageURL
+  //     };
 
-  //   api.post('http://localhost:8000/product/store', data)
-  //     .then(resp => console.log(resp.data))
-  //     .catch(error => console.log(error.response));
+  //     api.post('http://localhost:8000/product/store', data)
+  //       .then(resp => console.log(resp))
+  //       .catch(error => console.log(error.response));
+  //   });
   // };
+
+  function onChangeUploadImage({ fileList }) {
+    // const imageURL = URL.createObjectURL(fileList[0].originFileObj);
+    const imagePointer = fileList[0].originFileObj;
+    const data = new FormData();
+    data.append('image', imagePointer);
+    data.append('text', 'oi');
+
+    api.post('/product/store', data)
+      .then(resp => console.log(resp))
+      .catch(error => console.log(error.response));
+  };
 
   return (
     <>
@@ -72,6 +72,7 @@ function ProductsPage() {
         closable={true}
       >
         <Form
+          encType="multipart/form-data"
           form={form}
           layout="vertical"
           requiredMark={false}
