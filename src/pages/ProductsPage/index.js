@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import api from '../../api';
 
-import { Modal, Button, Form, Input, Select, Upload } from 'antd';
+import { Modal, Button, Form, Input, Select, Upload, message } from 'antd';
 import { IdcardOutlined, DollarOutlined, InboxOutlined } from '@ant-design/icons';
 
 import { UploadDescription, FormButtonSection } from './styles';
@@ -12,7 +12,7 @@ const { Dragger } = Upload;
 
 function ProductsPage() {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [imagePreview, setImagePreview] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [form] = Form.useForm();
 
@@ -26,36 +26,27 @@ function ProductsPage() {
   };
 
   function onSubmitForm(inputValues) {
-    console.log(inputValues);
-  };
+    setIsLoading(true);
+    
+    const imageType = inputValues.image.fileList[0].type;
 
-  // function getBase64(img, callback) {
-  //   const reader = new FileReader();
-  //   reader.addEventListener('load', () => callback(reader.result));
-  //   reader.readAsDataURL(img);
-  // };
+    if (imageType !== 'image/jpeg' && imageType !== 'image/png') {
+      return message.error('A imagem precisa ser JPG ou PNG');
+    };
 
-  // function onChangeUploadImage({ fileList }) {
-  //   getBase64(fileList[0].originFileObj, imageURL => {
-  //     const data = {
-  //       image: imageURL
-  //     };
-
-  //     api.post('http://localhost:8000/product/store', data)
-  //       .then(resp => console.log(resp))
-  //       .catch(error => console.log(error.response));
-  //   });
-  // };
-
-  function onChangeUploadImage({ fileList }) {
-    // const imageURL = URL.createObjectURL(fileList[0].originFileObj);
-    const imagePointer = fileList[0].originFileObj;
     const data = new FormData();
-    data.append('image', imagePointer);
-    data.append('text', 'oi');
+    data.append('title', inputValues.title);
+    data.append('description', inputValues.description);
+    data.append('price', inputValues.price);
+    data.append('tags', inputValues.tags);
+    data.append('image', inputValues.image.fileList[0].originFileObj);
 
     api.post('/product/store', data)
-      .then(resp => console.log(resp))
+      .then(resp => {
+        setIsLoading(false);
+        handleCancel();
+        message.success('Produto cadastrado!');
+      })
       .catch(error => console.log(error.response));
   };
 
@@ -88,6 +79,7 @@ function ProductsPage() {
             }]}
           >
             <Input 
+              disabled={isLoading}
               placeholder="Digite o título do produto" 
               prefix={<IdcardOutlined />} 
             />
@@ -100,7 +92,7 @@ function ProductsPage() {
               message: 'O produto precisa de uma descrição'
             }]}
           >
-            <TextArea />
+            <TextArea disabled={isLoading} />
           </Form.Item>
           <Form.Item
             label="Preço"
@@ -110,7 +102,7 @@ function ProductsPage() {
               message: 'O produto precisa de um preço'
             }]}
           >
-            <Input prefix={<DollarOutlined />} />
+            <Input disabled={isLoading} prefix={<DollarOutlined />} />
           </Form.Item>
           <Form.Item
             label="Tags"
@@ -120,7 +112,7 @@ function ProductsPage() {
               message: 'Insira alguma tag'
             }]}
           >
-            <Select placeholder="Digite ou selecione alguma tag" mode="tags">
+            <Select disabled={isLoading} placeholder="Digite ou selecione alguma tag" mode="tags">
               <Option key="1">Eletrônicos</Option>
               <Option key="2">Escritório</Option>
               <Option key="3">Gamer</Option>
@@ -135,7 +127,7 @@ function ProductsPage() {
             }]}
           >
             <Dragger
-              onChange={onChangeUploadImage}
+              disabled={isLoading}
               beforeUpload={() => false} 
             >
               <InboxOutlined style={{ fontSize: 50, color: '#40a9ff' }} />
@@ -147,6 +139,7 @@ function ProductsPage() {
           <Form.Item>
             <FormButtonSection>
               <Button 
+                disabled={isLoading}
                 style={{ margin: 5 }} 
                 type="primary" 
                 danger
@@ -155,6 +148,7 @@ function ProductsPage() {
                 Cancelar
               </Button>
               <Button 
+                loading={isLoading}
                 style={{ margin: 5 }} 
                 type="primary" 
                 htmlType="submit"
@@ -164,12 +158,9 @@ function ProductsPage() {
             </FormButtonSection>
           </Form.Item>
         </Form>
-        {imagePreview ? <img src={imagePreview} alt="test" /> : ''}
       </Modal>
     </>
   );
 };
-
-// tags preço data de cadastro imagem
 
 export default ProductsPage;
