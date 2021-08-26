@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import api from '../../api';
 
 import { Modal, Button, Form, Input, Select, Upload, message } from 'antd';
 import { IdcardOutlined, DollarOutlined, InboxOutlined } from '@ant-design/icons';
 
 import { UploadDescription, FormButtonSection } from './styles';
+
+import PostProductData from '../../Classes/PostProductData';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -34,20 +35,18 @@ function ProductsPage() {
       return message.error('A imagem precisa ser JPG ou PNG');
     };
 
-    const data = new FormData();
-    data.append('title', inputValues.title);
-    data.append('description', inputValues.description);
-    data.append('price', inputValues.price);
-    data.append('tags', inputValues.tags);
-    data.append('image', inputValues.image.fileList[0].originFileObj);
+    const data = {
+      title: inputValues.title,
+      description: inputValues.description,
+      price: inputValues.price,
+      tags: inputValues.tags,
+      image: inputValues.image.fileList[0].originFileObj
+    };
 
-    api.post('/product/store', data)
-      .then(resp => {
-        setIsLoading(false);
-        handleCancel();
-        message.success('Produto cadastrado!');
-      })
-      .catch(error => console.log(error.response));
+    const postProductData = new PostProductData(data);
+    postProductData.postData()
+      .then(resp => console.log(resp))
+      .catch(error => console.log(error));
   };
 
   return (
