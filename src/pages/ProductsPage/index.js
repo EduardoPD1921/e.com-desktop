@@ -113,9 +113,9 @@ function ProductsPage() {
             }]}
           >
             <Select disabled={isLoading} placeholder="Digite ou selecione alguma tag" mode="tags">
-              <Option key="1">Eletrônicos</Option>
-              <Option key="2">Escritório</Option>
-              <Option key="3">Gamer</Option>
+              <Option key="eletrônicos">Eletrônicos</Option>
+              <Option key="escritório">Escritório</Option>
+              <Option key="gamer">Gamer</Option>
             </Select>
           </Form.Item>
           <Form.Item
