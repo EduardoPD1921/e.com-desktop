@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Table, Spin, Button, Space } from 'antd';
+import { Table, Spin, Button, Space, message } from 'antd';
 
 import { UsersPageContainer } from './styles';
 
@@ -12,10 +12,18 @@ function UsersPage() {
   useEffect(() => {
     api.get('/user/show')
       .then(resp => setUsers(resp.data))
-      .catch(error => console.log(error.response));
+      .catch(error => {
+        message.error('Erro interno');
+        console.log(error.response);
+      });
   });
 
   const columns = [
+    {
+      title: 'ID',
+      dataIndex: '_id',
+      key: '_id'
+    },
     {
       title: 'Nome',
       dataIndex: 'name',
@@ -68,7 +76,7 @@ function UsersPage() {
       );
     };
 
-    return <Spin />
+    return <Spin style={{ alignSelf: 'center' }} />
   };
 
   return (

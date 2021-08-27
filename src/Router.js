@@ -2,15 +2,15 @@ import { HashRouter, Route } from 'react-router-dom';
 
 import SideMenu from './components/SideMenu';
 
-import UsersPage from './pages/UsersPage';
-import ProductsPage from './pages/ProductsPage';
+import UsersScreen from './screens/UsersScreen';
+import ProductsScreen from './screens/ProductsScreen';
 
 function Router() {
   return (
     <HashRouter>
       <SideMenu>
-        <Route exact path="/" component={UsersPage} />
-        <Route exact path="/products" component={ProductsPage} />
+        <Route exact path="/" component={UsersScreen} />
+        <Route exact path="/products" component={ProductsScreen} />
       </SideMenu>
     </HashRouter>
   );
