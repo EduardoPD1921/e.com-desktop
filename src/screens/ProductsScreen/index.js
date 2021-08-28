@@ -18,7 +18,14 @@ function ProductsPage() {
         message.error('Erro interno');
         console.log(error.response);
       });
-  });
+
+    const isProductRegistered = sessionStorage.getItem('product-registered');
+
+    if (isProductRegistered) {
+      sessionStorage.removeItem('product-registered');
+      message.success('Produto cadastrado');
+    };
+  }, []);
 
   const [form] = Form.useForm();
 

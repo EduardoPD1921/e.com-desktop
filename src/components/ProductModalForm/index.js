@@ -9,7 +9,7 @@ import {
 
 import { UploadDescription, FormButtonSection } from './styles';
 
-import PostProductData from "../../Classes/PostProductData";
+import PostProductData from "../../utils/classes/PostProductData";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -40,7 +40,8 @@ function ProductModalForm({ isModalVisible, handleCancel, form }) {
       .then(resp => {
         setIsLoading(false);
         handleCancel();
-        message.success('Produto cadastrado');
+        sessionStorage.setItem('product-registered', 'true');
+        window.location.reload();
       })
       .catch(error => {
         message.error('Erro interno');
