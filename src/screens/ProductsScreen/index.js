@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api';
 
-import { Button, Form, Table, Spin, Tag, message } from 'antd';
+import { Button, Form, message } from 'antd';
 
 import { ProductsPageContainer } from './styles';
+
+import InfoTable from '../../components/InfoTable';
+import productTableConfig from '../../utils/tableConfig/productTable';
 
 import ProductModalForm from '../../components/ProductModalForm';
 
@@ -38,77 +41,13 @@ function ProductsPage() {
     setIsModalVisible(false);
   };
 
-  const columns = [
-    {
-      title: 'ID',
-      dataIndex: '_id',
-      key: '_id'
-    },
-    {
-      title: 'Título',
-      dataIndex: 'title',
-      key: 'title'
-    },
-    {
-      title: 'Descrição',
-      dataIndex: 'description',
-      key: 'description'
-    },
-    {
-      title: 'Preço',
-      dataIndex: 'price',
-      key: 'price'
-    },
-    {
-      title: 'Tags',
-      dataIndex: 'tags',
-      key: 'tags',
-      render: tags => {
-        return tags.map(tag => {
-          return <Tag color="blue">{tag}</Tag>
-        });
-      }
-    },
-    {
-      title: 'Imagem',
-      dataIndex: 'image',
-      key: 'image'
-    },
-    {
-      title: 'Data de cadastro',
-      dataIndex: 'registrationDate',
-      key: 'registrationDate',
-      render: registrationDate => {
-        const date = new Date(registrationDate);
-
-        const dateDay = date.getDate();
-        const dateMonth = date.getMonth() + 1;
-        const dateYear = date.getFullYear();
-
-        const fullDate = `${dateDay}/${dateMonth}/${dateYear}`;
-
-        return fullDate;
-      }
-    }
-  ];
-
-  function renderProductsTable() {
-    if (products) {
-      return (
-        <Table
-          title={() => <h3>Produtos cadastrados</h3>}
-          columns={columns}
-          dataSource={products}
-        />
-      );
-    };
-
-    return <Spin style={{ alignSelf: 'center' }} />
-  };
-
   return (
     <ProductsPageContainer>
-      {renderProductsTable()}
+      <InfoTable
+         title="Produtos cadastrados"
+         columns={productTableConfig}
+         dataSource={products}
+      />
       <Button onClick={showModal}>
         Cadastrar produto
       </Button>

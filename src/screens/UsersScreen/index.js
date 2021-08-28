@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-import { Table, Spin, Button, Space, message } from 'antd';
+import { message } from 'antd';
+
+import InfoTable from '../../components/InfoTable';
+import userTableConfig from '../../utils/tableConfig/userTable';
 
 import { UsersPageContainer } from './styles';
 
@@ -18,70 +21,13 @@ function UsersPage() {
       });
   });
 
-  const columns = [
-    {
-      title: 'ID',
-      dataIndex: '_id',
-      key: '_id'
-    },
-    {
-      title: 'Nome',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email'
-    },
-    {
-      title: 'Data de nascimento',
-      dataIndex: 'birthDate',
-      key: 'birthDate',
-      render: birthDate => {
-        const date = new Date(birthDate);
-
-        const dateDay = date.getDate();
-        const dateMonth = date.getMonth() + 1;
-        const dateYear = date.getFullYear();
-
-        const fullDate = `${dateDay}/${dateMonth}/${dateYear}`;
-
-        return fullDate;
-      }
-    },
-    {
-      title: 'Ações',
-      dataIndex: 'actions',
-      key: 'actions',
-      render: () => {
-        return (
-         <Space>
-           <Button type="primary">Editar</Button>
-           <Button type="primary" danger>Deletar</Button>
-         </Space>
-        );
-      }
-    }
-  ];
-
-  function renderUsersTable() {
-    if (users) {
-      return (
-        <Table
-          title={() => <h3>Usuários cadastrados</h3>}
-          columns={columns}
-          dataSource={users}
-        />
-      );
-    };
-
-    return <Spin style={{ alignSelf: 'center' }} />
-  };
-
   return (
     <UsersPageContainer>
-      {renderUsersTable()}
+      <InfoTable
+        title="Usuários cadastrados"
+        columns={userTableConfig}
+        dataSource={users}
+      />
     </UsersPageContainer>
   );
 };

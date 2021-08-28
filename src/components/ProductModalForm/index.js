@@ -24,6 +24,7 @@ function ProductModalForm({ isModalVisible, handleCancel, form }) {
     const imageType = inputValues.image.fileList[0].type;
 
     if (imageType !== 'image/jpeg' && imageType !== 'image/png') {
+      setIsLoading(false);
       return message.error('A imagem precisa ser JPG ou PNG');
     };
 

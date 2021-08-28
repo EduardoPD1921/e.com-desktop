@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Table, Spin } from 'antd';
 
-function Table({ title, columns, dataSource }) {
+function InfoTable({ title, columns, dataSource }) {
   if (dataSource) {
     return (
       <Table
@@ -16,4 +16,4 @@ function Table({ title, columns, dataSource }) {
   return <Spin style={{ alignSelf: 'center' }} />
 };
 
-export default Table;
+export default InfoTable;
