@@ -56,18 +56,11 @@ function ProductsPage() {
       title: 'Tags',
       dataIndex: 'tags',
       key: 'tags',
-      // BUGGED
-      // render: tags => {
-      //   <>
-      //     {tags.map(tag => {
-      //       return (
-      //         <Tag color="default" key={tag}>
-      //           {tag.toUpperCase()}
-      //         </Tag>
-      //       );
-      //     })}
-      //   </>
-      // }
+      render: tags => {
+        return tags.map(tag => {
+          return <Tag color="blue">{tag}</Tag>
+        });
+      }
     },
     {
       title: 'Imagem',
