@@ -19,7 +19,14 @@ function UsersPage() {
         message.error('Erro interno');
         console.log(error.response);
       });
-  });
+
+    const isUserDeleted = sessionStorage.getItem('user-deleted');
+
+    if (isUserDeleted) {
+      sessionStorage.removeItem('user-deleted');
+      message.warn('Usuário excluído');
+    }
+  }, []);
 
   return (
     <UsersPageContainer>

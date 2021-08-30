@@ -1,4 +1,18 @@
-import { Space, Button } from 'antd';
+import { Space, Button, message } from 'antd';
+
+import api from '../../api';
+
+function deleteUser(id) {
+  api.delete(`/user/delete/${id}`)
+    .then(resp => {
+      sessionStorage.setItem('user-deleted', 'true');
+      window.location.reload();
+    })
+    .catch(error => {
+      message.error('Erro interno');
+      console.log(error.response);
+    });
+};
 
 const userTableConfig = [
   {
@@ -34,13 +48,13 @@ const userTableConfig = [
   },
   {
     title: 'Ações',
-    dataIndex: 'actions',
+    dataIndex: '_id',
     key: 'actions',
-    render: () => {
+    render: id => {
       return (
         <Space>
           <Button type="primary">Editar</Button>
-          <Button type="primary" danger>Deletar</Button>
+          <Button onClick={() => deleteUser(id)} type="primary" danger>Deletar</Button>
         </Space>
       );
     }
