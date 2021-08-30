@@ -34,7 +34,10 @@ const productTableConfig = [
   {
     title: 'Imagem',
     dataIndex: 'image',
-    key: 'image'
+    key: 'image',
+    render: image => {
+      return <a rel="noreferrer" target="_blank" href={image}>{image}</a>
+    }
   },
   {
     title: 'Data de cadastro',
